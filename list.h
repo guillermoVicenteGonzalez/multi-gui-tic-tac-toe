@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "TTTapi.h"
 
 typedef int nodeContent;
+//typedef nodeContent;
 
 typedef struct node{
 	nodeContent content;

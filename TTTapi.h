@@ -3,25 +3,32 @@
 #define PCHAR 'X'
 #define ECHAR 'O'
 
+/*
 typedef struct gameState{
 	char ** board;
 	int boardTam;
 	int turn;
 	int winCond;
-}gameState;
+} gameState;
 
 typedef struct position{
 	int x;
 	int y;
-}position;
+} position;
+
+typedef struct heuristicState{
+	position pos;
+	int heuristic;
+} hState;*/
 
 
 char ** createBoard(int tam);
 void recorrerBoard(char **board, int boardTam);
-gameState createGame(int tam, int winCond);
+//gameState createGame(int tam, int winCond);
 void setCell(char ** board, int x, int y, char c);
-int fillableRows(char **board, int tam);
-int fillableCols(char **board, int tam);
-int fillableDiags(char **board, int tam);
-int fillableAntiDiags(char **board, int tam);
+int fillableRows(char **board, int tam, char c);
+int fillableCols(char **board, int tam, char c);
+int fillableDiags(char **board, int tam, char c);
+int fillableAntiDiags(char **board, int tam, char c);
 void freeBoard(char ** board, int tam);
+int exploreState(char ** board, int tam, int x, int y);
