@@ -49,6 +49,14 @@ char ** createBoard(int tam){
 	return board;
 }
 
+void freeBoard(char ** board, int tam){
+	for(int i=0;i<tam;i++){
+		free(board[i]);
+	}
+
+	free(board);
+}
+
 void setCell(char ** board, int x, int y, char c){
 	board[x][y] = c;
 }
@@ -138,6 +146,10 @@ int fillableAntiDiags(char **board, int tam){
 	}else{
 		return 1;
 	}
+}
+
+int exploreState(char ** board, int tam, int x, int y){
+	
 }
 
 

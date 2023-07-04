@@ -10,6 +10,12 @@ typedef struct gameState{
 	int winCond;
 }gameState;
 
+typedef struct position{
+	int x;
+	int y;
+}position;
+
+
 char ** createBoard(int tam);
 void recorrerBoard(char **board, int boardTam);
 gameState createGame(int tam, int winCond);
@@ -18,3 +24,4 @@ int fillableRows(char **board, int tam);
 int fillableCols(char **board, int tam);
 int fillableDiags(char **board, int tam);
 int fillableAntiDiags(char **board, int tam);
+void freeBoard(char ** board, int tam);

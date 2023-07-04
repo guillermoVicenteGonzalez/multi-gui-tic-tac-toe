@@ -1,8 +1,11 @@
-game: main.c TTTapi.o
-	gcc main.c TTTapi.o -o game 
+game: main.c TTTapi.o list.o
+	gcc main.c TTTapi.o list.o -o game 
 
-test: test.c TTTapi.o
-	gcc test.c TTTapi.o -o test
+test: test.c TTTapi.o list.o
+	gcc test.c TTTapi.o list.o -o test
 
 TTTapi.o: TTTapi.c TTTapi.h
 	gcc -c TTTapi.c TTTapi.h
+
+list.o: list.c list.h
+	gcc -c list.c list.h 
