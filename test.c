@@ -3,13 +3,26 @@
 
 int main(int argc, char const *argv[])
 {
-	list lst = createList(3);
-	//pushToList(5,lst);
+	coords c;
+	coords d;
+
+	c.x = 1;
+	c.y = 2;
+	list lst = createList(c);
+	
+
+	c.x=3;
+	c.y=4;
+	pushToList(c,lst);
 	//pushToList(7,lst);
 	printList(lst);
-	//printf("\n%d\n",getFromList(lst));
-	//printList(lst);
+	printContent(getFromList(lst));
+	printf("\n");
+	//printf("\n");
+	//printf("\n%d\n",printCont));
+	printList(lst);
 	freeList(lst);
+	printf("\n");
 
 /*
 	board = createBoard(3);

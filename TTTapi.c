@@ -61,6 +61,10 @@ void setCell(char ** board, int x, int y, char c){
 	board[x][y] = c;
 }
 
+void clearCell(char **board, int x, int y){
+	board[x][y] = ' ';
+}
+
 int fillableRows(char **board, int tam, char c){
 	int count = 0;
 	int flag = 1;
@@ -200,4 +204,8 @@ void recorrerBoard(char **board, int tam){
 		}
 		fprintf(stdout,"\n");
 	}
+}
+
+int alfabeta(){
+	//
 }

@@ -4,6 +4,11 @@ int test(){
 	return 1;
 }
 
+//this func changes each time nodeCOntent definition changes
+void printContent(nodeContent c){
+	printf("\n[x]: %d [y]: %d", c.x, c.y);
+}
+
 list createList(nodeContent val){
 	//faltan errores
 	list lst;
@@ -58,7 +63,7 @@ nodeContent getFromList(list list){
 	nodeContent result;
 
 	if(list->length <= 0){
-		return 0;
+		exit -1;
 	}else if(list->length == 1){
 		result = list->content;
 		list->next = NULL;
@@ -79,13 +84,15 @@ nodeContent getFromList(list list){
 
 void printList(list list){
 	node * temp = list->next;
-	printf("[ %d",list->content);
+	//printf("[ %d",list->content);
+	printContent(list->content);
 
 	while(temp != NULL){
-		printf(", %d",temp->content);
+		//printf(", %d",temp->content);
+		printContent(temp->content);
 		temp = temp->next;
 	}
-	printf(" ]\n");
+	printf("\n");
 }
 
 

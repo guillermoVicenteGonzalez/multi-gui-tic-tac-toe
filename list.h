@@ -1,9 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "TTTapi.h"
 
-typedef int nodeContent;
+typedef struct coords{
+	int x;
+	int y;
+}coords;
+
+
+typedef coords nodeContent;
+//typedef int nodeContent;
 //typedef nodeContent;
+//typedef  coords nodeContent;
 
 typedef struct node{
 	nodeContent content;
@@ -24,3 +31,4 @@ int pushToList(nodeContent val, list list);
 void printList(list list);
 nodeContent getFromList(list list);
 int freeList(list list);
+void printContent(nodeContent c);

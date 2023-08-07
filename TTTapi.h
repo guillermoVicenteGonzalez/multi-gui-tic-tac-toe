@@ -3,7 +3,7 @@
 #define PCHAR 'X'
 #define ECHAR 'O'
 
-/*
+
 typedef struct gameState{
 	char ** board;
 	int boardTam;
@@ -19,7 +19,7 @@ typedef struct position{
 typedef struct heuristicState{
 	position pos;
 	int heuristic;
-} hState;*/
+} hState;
 
 
 char ** createBoard(int tam);
@@ -32,3 +32,4 @@ int fillableDiags(char **board, int tam, char c);
 int fillableAntiDiags(char **board, int tam, char c);
 void freeBoard(char ** board, int tam);
 int exploreState(char ** board, int tam, int x, int y);
+void clearCell(char **board, int x, int y);
