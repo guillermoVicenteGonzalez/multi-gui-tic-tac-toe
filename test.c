@@ -6,11 +6,14 @@ int main(int argc, char const *argv[])
 	coords c;
 	coords d;
 
-	c.x = 1;
-	c.y = 2;
 	list lst = createList(c);
 	
+	c.x = 1;
+	c.y = 2;
 
+	pushToList(c,lst);
+
+	
 	c.x=3;
 	c.y=4;
 	pushToList(c,lst);

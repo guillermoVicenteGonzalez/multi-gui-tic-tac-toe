@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "TTTapi.h"
+#include "list.h"
 
 
 /*
@@ -206,6 +207,43 @@ void recorrerBoard(char **board, int tam){
 	}
 }
 
-int alfabeta(){
-	//
+/*
+char ** createBoardCopy(char ** board, int tam){
+	char ** tempBoard;
+	tempBoard = createBoard(tam);
+
+	for(int i=0;i<tam; i++){
+		for(j=0;j<tam; j++){
+			tempBoard[i][j] = board[i][j];
+		}
+	}
+
+	return tempBoard;
 }
+
+//la x y la y estan cambiadas respecto a lo que serian en un eje de coords cartesianas
+coord alfabeta(char ** board, int tam){
+	//
+	coord tempCord;
+	char ** tempBoard
+	int alfa;
+	int beta;
+	list lst;
+
+	//creamos el tablero auxiliar
+	//y metemos en una lista las casillas vacias
+	lst = createList()
+	tempBoard = createBoardCopy(board, tam);
+	for(int i=0; i<tam; i++){
+		for(int j=0;j<tam; j++){
+			if(tempBoard[i][j] == ' '){
+				tempCord.y = i;
+				tempCord.x = j;
+				pushToList(lst,tempCord);
+			}
+		}
+	}
+
+
+}
+*/

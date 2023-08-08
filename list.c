@@ -17,7 +17,7 @@ list createList(nodeContent val){
 		return 0;
 	}
 
-	lst->content = val;
+	//lst->content = val;
 	//printf("%d",lst->content);
 	lst->next = NULL;
 	lst->last = NULL;
@@ -64,17 +64,13 @@ nodeContent getFromList(list list){
 
 	if(list->length <= 0){
 		exit -1;
-	}else if(list->length == 1){
-		result = list->content;
-		list->next = NULL;
-		list->next = NULL;
-		list->length = 0;
-		return result;
 	}else if(list->length > 1){
 		temp = list->next;
-		result = list->content;
+		//result = list->content;
+		result = temp->content;
+
 		list->next = temp->next;
-		list->content = temp->content;
+		//list->content = temp->content;
 		list->length --;
 		return result;
 	}
@@ -85,7 +81,7 @@ nodeContent getFromList(list list){
 void printList(list list){
 	node * temp = list->next;
 	//printf("[ %d",list->content);
-	printContent(list->content);
+	//printContent(list->content);
 
 	while(temp != NULL){
 		//printf(", %d",temp->content);

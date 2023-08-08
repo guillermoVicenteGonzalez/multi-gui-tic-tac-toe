@@ -18,7 +18,6 @@ typedef struct node{
 }node;
 
 typedef struct listRoot{
-	nodeContent content;
 	struct node * next;
 	struct node * last;
 	int length;
@@ -26,7 +25,7 @@ typedef struct listRoot{
 
 typedef listRoot* list;
 
-list createList(nodeContent val);
+list createList();
 int pushToList(nodeContent val, list list);
 void printList(list list);
 nodeContent getFromList(list list);
