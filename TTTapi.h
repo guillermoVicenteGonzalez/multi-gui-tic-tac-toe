@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define PCHAR 'X'
-#define ECHAR 'O'
+#include "list.h"
+#define PCHAR 'O'
+#define ECHAR 'X'
+#define BOARDTAM 3
 
 
 typedef struct gameState{
@@ -33,3 +35,5 @@ int fillableAntiDiags(char **board, int tam, char c);
 void freeBoard(char ** board, int tam);
 int exploreState(char ** board, int tam, int x, int y);
 void clearCell(char **board, int x, int y);
+char ** createBoardCopy(char ** board, int tam);
+coords alfabeta(char ** board, int tam);
