@@ -337,3 +337,55 @@ coords alfabeta(char ** board, int tam){
 	return finalCoord;
 
 }
+
+/***************************************************************************
+ * FRONT STUFF
+ * *************************************************************************/
+
+WINDOW * createTTTWin(int tam){
+	WINDOW *TTTWin;
+	int width = tam +2;
+	int height = tam+2;
+	int screenWM, screenHM; //middle of the screen
+
+	screenHM = (LINES - height)/2;
+	screenWM = (COLS-width)/2;
+
+
+	TTTWin = newwin(height,width,screenHM,screenWM);
+	box(TTTWin,0,0);
+	wrefresh(TTTWin);
+
+	return TTTWin;
+}
+
+void printBoardCurses(WINDOW * win, char ** board, int tam){
+	for(int i=1;i<tam+1;i++){
+		for(int j=1; j<tam+1; j++){
+			//mvwaddch(win,i,j,board[i][j]);
+			mvwaddch(win,i,j,'X');
+		}
+	}
+
+	refresh();
+	wrefresh(win);
+}
+
+/*
+WINDOW * createRWin(){
+	WINDOW * win;
+	int startx, starty, width, height;
+
+	height = LINES;
+	width = COLS;
+
+	startx = (COLS - width)/2;
+	starty = (LINES - height)/2;
+
+	win = newwin(height, width, starty, startx);
+	box(win,0,0);
+	wrefresh(win);
+	refresh();
+
+	return win;
+}*/
