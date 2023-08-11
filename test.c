@@ -1,4 +1,4 @@
-#include "TTTapi.h"
+//#include "TTTapi.h"
 #include "guilleCursesLib.h"
 
 int main(int argc, char const *argv[])
@@ -8,22 +8,34 @@ int main(int argc, char const *argv[])
 	char **board;
 	WINDOW * mainWin;
 	WINDOW * TTTWin;
+	WINDOW * shadow;
 
 
 	board = createBoard(3);
 
 	initCurses();
 	refresh();
+	init_pair(1, COLOR_GREEN, COLOR_WHITE);
+	attron(COLOR_PAIR(1));
+
+
+	refresh();
 	mainWin = createRWin();
+	wbkgd(mainWin,COLOR_PAIR(1));
 	refresh();
 	wrefresh(mainWin);
 
+	menu();
+
+	//shadow = createShadow(int h, int w, int starty, int startx, int offset);
 	TTTWin = createTTTWin(BOARDTAM);
 	refresh();
 	wrefresh(TTTWin);
 
 
 	printBoardCurses(TTTWin, board, BOARDTAM);
+
+	selectCell(BOARDTAM, TTTWin);
 
 	getch();
 	endCurses();

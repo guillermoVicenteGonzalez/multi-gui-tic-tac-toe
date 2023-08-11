@@ -17,4 +17,15 @@ int main(int argc, char const *argv[])
 
 	lst = createList(3);
 	return 0;
+
+
+	/*
+	1.Menu para escoger
+	 - IA
+	 - 2P
+
+	2 Juego como tal
+	 - construir tablero
+	 - pintar tablero
+	 - turno 1 
 }

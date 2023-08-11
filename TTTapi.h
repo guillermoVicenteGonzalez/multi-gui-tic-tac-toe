@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-#include "guilleCursesLib.h"
 #define PCHAR 'O'
 #define ECHAR 'X'
 #define BOARDTAM 3
@@ -38,5 +37,3 @@ int exploreState(char ** board, int tam, int x, int y);
 void clearCell(char **board, int x, int y);
 char ** createBoardCopy(char ** board, int tam);
 coords alfabeta(char ** board, int tam);
-WINDOW * createTTTWin(int tam);
-void printBoardCurses(WINDOW * win, char ** board, int tam);
