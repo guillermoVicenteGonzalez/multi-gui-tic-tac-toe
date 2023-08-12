@@ -168,6 +168,7 @@ position selectCell(int tam, WINDOW * win){
 }
 
 
+
 int menu(){
 	WINDOW * menuWin;
 	WINDOW * shadow;
@@ -294,6 +295,7 @@ void destroy_win(WINDOW *local_win)
 }
 
 void playAgainstIA(){
+	int flag = 1;
 	char ** board;
 	WINDOW *TTTWin;
 	position playerPos;
@@ -309,7 +311,7 @@ void playAgainstIA(){
 //mientras..... (hay que hacer la funcion de win condition)
 
 	printBoardCurses(TTTWin, board, BOARDTAM);
-	while(true){
+	while(flag){
 		if(turn ==0){
 			playerPos = selectCell(BOARDTAM,TTTWin);
 			printw("x:%d y:%d",playerPos.x, playerPos.y);
@@ -319,21 +321,35 @@ void playAgainstIA(){
 				printw("Error");
 			}
 			turn =1;
+
+			if(checkWinCond(board,BOARDTAM,PCHAR)){
+				flag = 0;
+				printw("Player wins");
+			}
 		}else{
 			enemyPos = alfabeta(board,BOARDTAM);
 			if(board[enemyPos.x][enemyPos.y] == ' '){
 				board[enemyPos.x][enemyPos.y] = ECHAR;
 			}	
 			turn =0;	
+
+			if(checkWinCond(board,BOARDTAM,ECHAR)){
+				printw("IA wins");
+				flag = 0;
+			}
 		}
 
 		printBoardCurses(TTTWin, board, BOARDTAM);
 		wmove(TTTWin,playerPos.y, playerPos.x);
 		wrefresh(TTTWin);
+		if(checkDraw(board,BOARDTAM)){
+			flag =1;
+			printw("Its a draw");
+		} 
 
 	}
 
-	
+	getch();
 
 
 

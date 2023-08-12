@@ -338,6 +338,91 @@ coords alfabeta(char ** board, int tam){
 
 }
 
+
+int checkFullRow(char **board, int tam, char c){
+	int flag = 1;
+
+	for(int i=0;i<tam;i++){
+		for(int j=0;j<tam;j++){
+			if(board[i][j]!= c)
+				flag =0;
+				//printf("x:%d y:%d == %c\n",i,j,board[i][j]);
+		}
+
+		if(flag == 1){
+			return flag;
+		}else{
+			flag = 1;
+		}
+	}
+
+	return 0;
+}
+
+int checkFullCol(char ** board, int tam, char c){
+	int flag = 1;
+
+	for(int j=0;j<tam;j++){
+		for(int i=0;i<tam;i++){
+			if(board[i][j]!= c)
+				flag =0;
+			//printf("x:%d y:%d != %c\n",i,j,c);
+		}
+
+		if(flag == 1){
+			return flag;
+		}else{
+			flag = 1;
+		}
+	}
+
+	return 0;
+}
+
+
+int checkFullDiag(char **board, int tam, char c){
+	int flag = 1;
+
+	for(int i=0;i<tam;i++){
+		if(board[i][i] != c)
+			flag = 0;
+	}
+
+	return flag;
+}
+
+int checkFullAntiDiag(char **board, int tam, char c){
+	int flag = 1;
+
+	for(int i=0; i<tam; i++){
+		if(board[(tam-1)-i][i] != c){
+			flag = 0;
+		}
+	}
+
+	return flag;
+}
+
+int checkWinCond(char **board, int tam, char c){
+	int res = 0;
+	if(checkFullRow(board,tam,c)) return 1;
+	if(checkFullCol(board,tam,c)) return 1;
+	if(checkFullDiag(board, tam,c)) return 1;
+	if(checkFullAntiDiag(board,tam,c)) return 1;
+
+	return 0;
+}
+
+int checkDraw(char ** board, int tam){
+	for(int i=0;i<tam;i++){
+		for(int j=0;j<tam;j++){
+			if(board[i][j] == ' ') return 0;
+		}
+	}
+
+	return 1; //si todas las casillas estan ocupadas => empate.
+}
+
 /***************************************************************************
  * FRONT STUFF
  * *************************************************************************/

@@ -39,46 +39,35 @@ int main(int argc, char const *argv[])
 	}else if(1 == selection){
 
 	}
-
-/*
-	TTTWin = createTTTWin(BOARDTAM);
-	wrefresh(TTTWin);
-
-
-	printBoardCurses(TTTWin, board, BOARDTAM);
-	selectCell(BOARDTAM, TTTWin);
-	*/
-
-	getch();
-	endCurses();
-
-/*
-	list lst = createList(c);
 	
-	c.x = 1;
-	c.y = 2;
 
-	pushToList(c,lst);
+	//getch();
+	endCurses();
+	return 0;
+	
 
-
-	c.x=3;
-	c.y=4;
-	pushToList(c,lst);
-	//pushToList(7,lst);
-	printList(lst);
-	printContent(getFromList(lst));
-	printf("\n");
-	//printf("\n");
-	//printf("\n%d\n",printCont));
-	printList(lst);
-	freeList(lst);
-	printf("\n");*/
 
 /*
+
 	board = createBoard(3);
+	setCell(board,2,0,'X');
+	setCell(board,1,1,'X');
+
+
 	recorrerBoard(board,3);
-	c = alfabeta(board,3);
-	printf("[x]:%d    [y]:%d",c.x,c.y);
+
+	printf("%d",checkFullCol(board,BOARDTAM,'X'));
+	printf("%d",checkFullRow(board,BOARDTAM,'X'));
+	printf("%d",checkFullDiag(board,BOARDTAM,'X'));
+	printf("%d",checkFullAntiDiag(board,BOARDTAM,'X'));
+
+	printf("%d",checkWinCond(board,BOARDTAM,'X'));
+
+
+
+	//c = alfabeta(board,3);
+	//printf("[x]:%d    [y]:%d",c.x,c.y);
 	return 0;*/
+	
 	
 }
