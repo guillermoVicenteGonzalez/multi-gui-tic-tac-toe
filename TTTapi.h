@@ -13,15 +13,20 @@ typedef struct gameState{
 	int winCond;
 } gameState;
 
+/*
 typedef struct position{
 	int x;
 	int y;
 } position;
+*/
+
+typedef coords position;
 
 typedef struct heuristicState{
 	position pos;
 	int heuristic;
 } hState;
+
 
 
 char ** createBoard(int tam);

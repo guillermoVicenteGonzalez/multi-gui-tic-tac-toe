@@ -192,7 +192,7 @@ int exploreState(char ** board, int tam, int x, int y){
 
 	result = IARes - playerRes;
 
-	printf("\nIARes: %d - playerRes: %d = %d\n",IARes, playerRes, result);
+	//printf("\nIARes: %d - playerRes: %d = %d\n",IARes, playerRes, result);
 	return result;
 }
 
@@ -280,27 +280,27 @@ coords alfabeta(char ** board, int tam){
 		while(auxLst->length > 1){
 			tempCoord = getFromList(auxLst);
 			setCell(tempBoard,tempCoord.x, tempCoord.y, PCHAR);
-			printf("se esta evaluando:\nX -> x:%d y:%d\nO -> x:%d y:%d\n",currentCoord.x, currentCoord.y, tempCoord.x, tempCoord.y);
-			recorrerBoard(tempBoard,3);
+			//printf("se esta evaluando:\nX -> x:%d y:%d\nO -> x:%d y:%d\n",currentCoord.x, currentCoord.y, tempCoord.x, tempCoord.y);
+			//recorrerBoard(tempBoard,3);
 			h = exploreState(tempBoard,3,3,3);
 
 			//si alfa es mejor que un estado de la exploracion, dejo de explorar
 			if(alfa != -7 && h<alfa){
-				printf("\ndejo de explorar\n");
-				printf("h=%d; alfa=%d\n",h,alfa);
+				//printf("\ndejo de explorar\n");
+				//printf("h=%d; alfa=%d\n",h,alfa);
 				break;
 			}
 
 			//si no, comparo y al final de la iteracion me tengo que quedar con el mejor beta.
 			if(h<beta){
-				printf("h=%d; beta=%d => beta=%d\n",h,beta,h);
+				//printf("h=%d; beta=%d => beta=%d\n",h,beta,h);
 				beta = h;
 			}else if(beta == -7){//si es la primera exploracion
 				beta =h;
 			}
 
 			clearCell(tempBoard, tempCoord.x, tempCoord.y);
-			printf("\n");
+			//printf("\n");
 		}
 
 		/*
@@ -308,12 +308,12 @@ coords alfabeta(char ** board, int tam){
 		o salir prematuramente
 		Se compara la beta (mejor jugada del oponente) con alfa (la jugada que mas nos beneficiaba hasta ahora)
 		*/
-		printf("\n--------------------------------------\ntras esta exploracion, beta = %d\n--------------------------------------\n",beta);
+		//printf("\n--------------------------------------\ntras esta exploracion, beta = %d\n--------------------------------------\n",beta);
 		if(alfa == -7 || (beta != 7 && beta > alfa)){
-			printf("alfa previo= %d ",alfa);
+			//printf("alfa previo= %d ",alfa);
 			alfa = beta;
 			finalCoord =currentCoord;
-			printf("alfa nuevo= %d\n",alfa);
+			//printf("alfa nuevo= %d\n",alfa);
 		}
 
 		/*
@@ -333,7 +333,7 @@ coords alfabeta(char ** board, int tam){
 	//aqui devolvemos la final coord, que deberia de ser la mejor de las jugadas.
 
 	//printList(lst);
-	printf("\nla mejor heuristica es: %d\n",alfa);
+	//printf("\nla mejor heuristica es: %d\n",alfa);
 	return finalCoord;
 
 }

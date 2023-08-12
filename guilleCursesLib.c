@@ -111,7 +111,7 @@ WINDOW * createShadow(int h, int w, int starty, int startx, int offset){
 	return shadow;
 }
 
-void selectCell(int tam, WINDOW * win){
+position selectCell(int tam, WINDOW * win){
 	int ch;
 	position cursPos;
 
@@ -121,6 +121,9 @@ void selectCell(int tam, WINDOW * win){
 	keypad(win, TRUE);
 	init_pair(4,COLOR_GREEN,COLOR_BLACK);
 	attron(COLOR_PAIR(4));
+
+	wmove(win,1,1);
+	wrefresh(win);
 	refresh();
 
 	do{
@@ -158,6 +161,10 @@ void selectCell(int tam, WINDOW * win){
 
 
 	}while(ch != 10);
+
+	cursPos.x--;
+	cursPos.y--;
+	return cursPos;
 }
 
 
@@ -259,9 +266,95 @@ int menu(){
 
 	//borrar ventanas
 
+	destroy_win(menuWin);
+	destroy_win(shadow);
 	return selection;
 }
 
+void destroy_win(WINDOW *local_win)
+{	
+	/* box(local_win, ' ', ' '); : This won't produce the desired
+	 * result of erasing the window. It will leave it's four corners 
+	 * and so an ugly remnant of window. 
+	 */
+	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	/* The parameters taken are 
+	 * 1. win: the window on which to operate
+	 * 2. ls: character to be used for the left side of the window 
+	 * 3. rs: character to be used for the right side of the window 
+	 * 4. ts: character to be used for the top side of the window 
+	 * 5. bs: character to be used for the bottom side of the window 
+	 * 6. tl: character to be used for the top left corner of the window 
+	 * 7. tr: character to be used for the top right corner of the window 
+	 * 8. bl: character to be used for the bottom left corner of the window 
+	 * 9. br: character to be used for the bottom right corner of the window
+	 */
+	wrefresh(local_win);
+	delwin(local_win);
+}
+
+void playAgainstIA(){
+	char ** board;
+	WINDOW *TTTWin;
+	position playerPos;
+	position enemyPos;
+
+	board = createBoard(BOARDTAM);
+	TTTWin = createTTTWin(BOARDTAM);
+	wmove(TTTWin,1,1);
+	wrefresh(TTTWin);
+	int turn = 0;
+
+
+//mientras..... (hay que hacer la funcion de win condition)
+
+	printBoardCurses(TTTWin, board, BOARDTAM);
+	while(true){
+		if(turn ==0){
+			playerPos = selectCell(BOARDTAM,TTTWin);
+			printw("x:%d y:%d",playerPos.x, playerPos.y);
+			if(board[playerPos.y][playerPos.x] == ' '){
+				board[playerPos.y][playerPos.x] = PCHAR;
+			}else{
+				printw("Error");
+			}
+			turn =1;
+		}else{
+			enemyPos = alfabeta(board,BOARDTAM);
+			if(board[enemyPos.x][enemyPos.y] == ' '){
+				board[enemyPos.x][enemyPos.y] = ECHAR;
+			}	
+			turn =0;	
+		}
+
+		printBoardCurses(TTTWin, board, BOARDTAM);
+		wmove(TTTWin,playerPos.y, playerPos.x);
+		wrefresh(TTTWin);
+
+	}
+
+	
+
+
+
+	//check win condition
+
+	//turno de la IA
+
+
+
+/*
+	if(turn == 1){
+		playerPos = selectCell();
+		board = playerPos;
+		checkCondition
+		printBoard();
+		turn =0;
+	}else{
+
+	}
+*/
+}
 
 /*
 WINDOW * createRWin(){

@@ -9,9 +9,10 @@ int main(int argc, char const *argv[])
 	WINDOW * mainWin;
 	WINDOW * TTTWin;
 	WINDOW * shadow;
+	int selection;
 
 
-	board = createBoard(3);
+	//board = createBoard(3);
 
 	initCurses();
 	refresh();
@@ -22,20 +23,31 @@ int main(int argc, char const *argv[])
 	refresh();
 	mainWin = createRWin();
 	wbkgd(mainWin,COLOR_PAIR(1));
-	refresh();
 	wrefresh(mainWin);
 
-	menu();
 
-	//shadow = createShadow(int h, int w, int starty, int startx, int offset);
+	selection = menu();
+
+
+	destroy_win(mainWin);
+	mainWin = createRWin();
+	wbkgd(mainWin,COLOR_PAIR(1));
+	wrefresh(mainWin);
+
+	if(0 == selection){
+		playAgainstIA();
+	}else if(1 == selection){
+
+	}
+
+/*
 	TTTWin = createTTTWin(BOARDTAM);
-	refresh();
 	wrefresh(TTTWin);
 
 
 	printBoardCurses(TTTWin, board, BOARDTAM);
-
 	selectCell(BOARDTAM, TTTWin);
+	*/
 
 	getch();
 	endCurses();

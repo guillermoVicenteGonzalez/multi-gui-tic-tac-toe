@@ -11,5 +11,7 @@ WINDOW * createRWin();
 WINDOW * createTTTWin(int tam);
 void printBoardCurses(WINDOW * win, char ** board, int tam);
 WINDOW * createShadow(int h, int w, int starty, int startx, int offset);
-void selectCell(int tam, WINDOW * win);
+position selectCell(int tam, WINDOW * win);
 int menu();
+void destroy_win(WINDOW *local_win);
+void playAgainstIA();
