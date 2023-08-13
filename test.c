@@ -10,6 +10,7 @@ int main(int argc, char const *argv[])
 	WINDOW * TTTWin;
 	WINDOW * shadow;
 	int selection;
+	int winner;
 
 
 	//board = createBoard(3);
@@ -35,9 +36,12 @@ int main(int argc, char const *argv[])
 	wrefresh(mainWin);
 
 	if(0 == selection){
-		playAgainstIA();
+		winner= playAgainstIA();
+
 	}else if(1 == selection){
 
+	}else if(2 == selection){
+		return 0;
 	}
 	
 

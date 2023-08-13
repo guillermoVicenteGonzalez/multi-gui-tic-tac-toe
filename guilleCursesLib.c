@@ -205,8 +205,13 @@ int menu(){
 	strcpy(message,"Player against Player");
 	auxX = ((width-2) - strlen(message))/2;
 	auxY = 5;
-	
 	mvwprintw(menuWin, auxY, auxX,message);
+
+	strcpy(message,"Exit");
+	auxX = ((width-2) - strlen(message))/2;
+	auxY = 7;
+	mvwprintw(menuWin, auxY, auxX,message);
+
 	wmove(menuWin,auxY,auxX);
 	wrefresh(menuWin);
 
@@ -215,51 +220,77 @@ int menu(){
 		ch=getch();
 		switch(ch){
 			case KEY_UP:
-				selection = 0;
-			    wattron(menuWin,A_STANDOUT);
-			    wattron(menuWin,A_BLINK);
-				strcpy(message,"Player against IA");
-				auxX = ((width-2) - strlen(message))/2;
-				auxY = 3;
-				mvwprintw(menuWin, auxY, auxX,message);
-				wattroff(menuWin,A_STANDOUT);
-				wattroff(menuWin,A_BLINK);
-				wmove(menuWin,auxY,auxX-1);
-
-
-				strcpy(message,"Player against Player");
-				auxX = ((width-2) - strlen(message))/2;
-				auxY = 5;
-				
-				mvwprintw(menuWin, auxY, auxX,message);
-				wrefresh(menuWin);
-
-
+				if(selection >0)
+					selection--;
 				break;
 
 			case KEY_DOWN:
-				selection = 1;
+				if(selection < 2)
+					selection++;
+				break;
+		}
+
+		if(selection == 0){
+				wattron(menuWin,A_STANDOUT);
+			    wattron(menuWin,A_BLINK);
+				strcpy(message,"Player against IA");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 3;
+				mvwprintw(menuWin, auxY, auxX,message);
+				wattroff(menuWin,A_STANDOUT);
+				wattroff(menuWin,A_BLINK);
+
+				strcpy(message,"Player against Player");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 5;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"Exit");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 7;
+				mvwprintw(menuWin, auxY, auxX,message);
+		}else if(selection == 1){
 				strcpy(message,"Player against IA");
 				auxX = ((width-2) - strlen(message))/2;
 				auxY = 3;
 				mvwprintw(menuWin, auxY, auxX,message);
 
-
+				wattron(menuWin,A_STANDOUT);
+			    wattron(menuWin,A_BLINK);
 				strcpy(message,"Player against Player");
 				auxX = ((width-2) - strlen(message))/2;
 				auxY = 5;
-				wattron(menuWin,A_STANDOUT);
-			    wattron(menuWin,A_BLINK);
 				mvwprintw(menuWin, auxY, auxX,message);
 				wattroff(menuWin,A_STANDOUT);
 				wattroff(menuWin,A_BLINK);
 
-				wmove(menuWin,auxY,auxX-1);
-				wrefresh(menuWin);
-				break;
+				strcpy(message,"Exit");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 7;
+				mvwprintw(menuWin, auxY, auxX,message);
+		}else if(selection == 2){
+				strcpy(message,"Player against IA");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 3;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"Player against Player");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 5;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				wattron(menuWin,A_STANDOUT);
+			    wattron(menuWin,A_BLINK);
+				strcpy(message,"Exit");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 7;
+				mvwprintw(menuWin, auxY, auxX,message);
+				wattroff(menuWin,A_STANDOUT);
+				wattroff(menuWin,A_BLINK);
 		}
 
 		//attroff(A_STANDOUT);
+		wmove(menuWin,auxY,auxX);
 		wrefresh(menuWin);
 
 	}while(ch != 10);
@@ -294,7 +325,7 @@ void destroy_win(WINDOW *local_win)
 	delwin(local_win);
 }
 
-void playAgainstIA(){
+int playAgainstIA(){
 	int flag = 1;
 	char ** board;
 	WINDOW *TTTWin;
@@ -314,8 +345,8 @@ void playAgainstIA(){
 	while(flag){
 		if(checkDraw(board,BOARDTAM)){
 			flag =1;
-			printw("Its a draw");
-			break;
+			return 0;
+			//break;
 		} 
 
 
@@ -325,13 +356,13 @@ void playAgainstIA(){
 			if(board[playerPos.y][playerPos.x] == ' '){
 				board[playerPos.y][playerPos.x] = PCHAR;
 			}else{
-				printw("Error");
+				return -1;
 			}
 			turn =1;
 
 			if(checkWinCond(board,BOARDTAM,PCHAR)){
 				flag = 0;
-				printw("Player wins");
+				return 1;
 			}
 		}else{
 			enemyPos = alfabeta2(board,BOARDTAM);
@@ -341,8 +372,8 @@ void playAgainstIA(){
 			turn =0;	
 
 			if(checkWinCond(board,BOARDTAM,ECHAR)){
-				printw("IA wins");
 				flag = 0;
+				return 2;
 			}
 		}
 
