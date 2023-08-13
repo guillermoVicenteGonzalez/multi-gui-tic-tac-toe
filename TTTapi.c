@@ -1,29 +1,6 @@
 #include <stdio.h>
 #include "TTTapi.h"
 
-
-/*
-gameState createGame(int tam, int winCond){
-	char **board;
-	gameState state;
-
-	state.board = createBoard(tam);
-	state.boardTam = tam;
-	state.winCond = winCond;
-	state.turn = 0;
-
-	return state;
-
-
-	//crea estructura de datos
-}*/
-
-/**
- * First allocates memory for board which will have tam rows of pointers
- * Then allocates memory for each row, which will have tam cells of integers.
- * Then assigns value 0 == empty for each cell
- * Lastly?? returns the board 
- **/
 char ** createBoard(int tam){
 	char **board;
 
@@ -152,26 +129,6 @@ int fillableAntiDiags(char **board, int tam, char c){
 	}
 }
 
-/*
-
-state enemyAi(){
-	//recorro la matriz. Meto los huecos en una lista
-	//creo una copia del tablero
-
-	/* Para cada elemento de la lista
-	 - marco con ECHAR esa casilla. Saco de la lista
-	 - meto en otra lista las casillas vacias
-	 - pruebo en cada una a poner PCHAR
-	 - invoco a  exploreState.
-	 - guardo los heuristicState en una lista
-	 - al explorar todas las casillas guardo el mejor resultado.
-	 - en la siguiente exploracion, comparo heurisiticas.
-	 Solo sigo si obtengo una mejor, si no, dejo de explorar.
-
-	
-
-
-}*/
 
 //te da un tablero y devuelve la metrica del enemigo
 int exploreState(char ** board, int tam, int x, int y){
@@ -368,14 +325,6 @@ coords alfabeta2(char **board, int tam){
 		}
 	}
 
-
-	/**
-	 * A diferencia de la version 1, primero verificamos que no vaya a ganar el player
-	 * */
-
-
-
-
 	//ahora por cada celda
 	//colocamos una X
 	//rellenamos otra lista con las casillas vacias
@@ -387,10 +336,15 @@ coords alfabeta2(char **board, int tam){
 		currentCoord = getFromList(lst);
 		setCell(tempBoard, currentCoord.x,currentCoord.y,ECHAR);
 
+		//antes de seguir comprobamos si esa casilla nos da la victoria
+		if(checkWinCond(tempBoard,tam,ECHAR)){
+			return currentCoord;
+		}
+
 		//ahora rellenamos una segunda lista con las casillas que quedan vacias (posibles movimientos del rival)
 		auxLst = createList();
-		for(int i=0;i<BOARDTAM;i++){
-			for(int j=0;j<BOARDTAM;j++){
+		for(int i=0;i<tam;i++){
+			for(int j=0;j<tam;j++){
 				if(tempBoard[i][j] == ' '){
 					auxCoord.x = i;
 					auxCoord.y = j;
@@ -427,7 +381,7 @@ coords alfabeta2(char **board, int tam){
 			//!NUEVO. Verifico si gana el jugador
 			//en ese caso le asigno artificialmente una beta muy grande
 			//o: devuelvo
-			if(checkWinCond(tempBoard,BOARDTAM,PCHAR)){
+			if(checkWinCond(tempBoard,tam,PCHAR)){
 				beta = -6;
 				//printf("aqui el jugador gana: beta es %d\n",beta);
 			}
@@ -456,7 +410,7 @@ coords alfabeta2(char **board, int tam){
 		- Metemos en una lista las casillas vacias de nuevo
 		*/
 
-		freeBoard(tempBoard,BOARDTAM);
+		freeBoard(tempBoard,tam);
 		tempBoard = createBoardCopy(board, tam);
 		freeList(auxLst);
 

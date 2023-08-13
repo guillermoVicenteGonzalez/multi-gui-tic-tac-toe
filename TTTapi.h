@@ -4,6 +4,7 @@
 #define PCHAR 'O'
 #define ECHAR 'X'
 #define BOARDTAM 3
+#define MAXBOARDTAM 10
 
 
 typedef struct gameState{

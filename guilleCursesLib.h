@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include "TTTapi.h"
+#include <string.h>
 
 
 void initCurses();
@@ -14,4 +15,4 @@ WINDOW * createShadow(int h, int w, int starty, int startx, int offset);
 position selectCell(int tam, WINDOW * win);
 int menu();
 void destroy_win(WINDOW *local_win);
-int playAgainstIA();
+int playAgainstIA(int tam);

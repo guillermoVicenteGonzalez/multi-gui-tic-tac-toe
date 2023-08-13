@@ -36,8 +36,9 @@ int main(int argc, char const *argv[])
 	wrefresh(mainWin);
 
 	if(0 == selection){
-		winner= playAgainstIA();
-
+		winner= playAgainstIA(3);
+		printw("whinner is: %d",winner);
+		getch();
 	}else if(1 == selection){
 
 	}else if(2 == selection){

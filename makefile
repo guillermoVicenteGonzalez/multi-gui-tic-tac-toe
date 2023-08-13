@@ -1,5 +1,5 @@
-game: main.c TTTapi.o list.o
-	gcc main.c TTTapi.o list.o -o game 
+game: main.c TTTapi.o list.o guilleCursesLib.o
+	gcc main.c TTTapi.o list.o guilleCursesLib.o -lncurses -o game
 
 test: test.c TTTapi.o list.o guilleCursesLib.o
 	gcc test.c TTTapi.o list.o guilleCursesLib.o -lncurses -o test

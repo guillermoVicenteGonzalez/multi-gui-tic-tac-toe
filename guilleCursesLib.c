@@ -1,5 +1,4 @@
 #include "guilleCursesLib.h"
-#include <string.h>
 
 void initCurses(){
 	initscr(); //initialices ncurses terminal mode
@@ -12,9 +11,19 @@ void initCurses(){
 		getch();
 	}else{
 		start_color();
+
+		init_color(COLOR_RED, 1000, 0, 0);
+		init_color(COLOR_GREEN, 0, 1000, 0);
+		init_color(COLOR_BLUE, 0, 0, 1000);
+		init_color(COLOR_WHITE, 1000, 1000, 1000);
+		//init_color(COLOR_BLACK, 0, 0, 0);
+
 		init_pair(1, COLOR_GREEN, COLOR_WHITE); //fondo
-		init_pair(2,COLOR_RED,COLOR_BLUE); //menues
-		init_pair(3,COLOR_BLACK,COLOR_BLACK); //negro para sombras
+		init_pair(2,COLOR_WHITE,COLOR_BLUE); //menues
+		init_pair(3,COLOR_GREEN,COLOR_BLACK); //negro para sombras
+
+		init_pair(4, COLOR_GREEN, COLOR_BLUE); //jugadas de player1
+		init_pair(5, COLOR_RED, COLOR_BLUE); //jugadas de player2/IA
 	}
 }
 
@@ -66,8 +75,7 @@ WINDOW * createTTTWin(int tam){
 	screenHM = (LINES - height)/2;
 	screenWM = (COLS-width)/2;
 
-	init_pair(2,COLOR_WHITE,COLOR_BLUE);
-	attron(COLOR_PAIR(2));
+	//attron(COLOR_PAIR(2));
 	TTTWin = newwin(height,width,screenHM,screenWM);
 	box(TTTWin,0,0);
 	wbkgd(TTTWin,COLOR_PAIR(2));
@@ -120,11 +128,12 @@ position selectCell(int tam, WINDOW * win){
 
 	keypad(win, TRUE);
 	init_pair(4,COLOR_GREEN,COLOR_BLACK);
-	attron(COLOR_PAIR(4));
+	//attron(COLOR_PAIR(4));
 
-	wmove(win,1,1);
+	wmove(win,0,0);
+	wmove(win,cursPos.y, cursPos.x);
 	wrefresh(win);
-	refresh();
+	//refresh();
 
 	do{
 		ch =getch();
@@ -303,6 +312,37 @@ int menu(){
 	return selection;
 }
 
+int sizeMenu(){
+	WINDOW * menuWin;
+	WINDOW * shadow;
+	int width, height, startx, starty, auxX, auxY;
+	char message[30];
+	int selection = 0;
+	int ch;
+	int size = 3;
+
+	width = COLS/2;
+	height = LINES/2;
+	startx = (COLS -width)/2;
+	starty = (LINES-height)/2;
+
+	menuWin = newwin(height, width,starty,startx);
+	shadow = newwin(height, width,starty+1,startx+2);
+
+	wbkgd(shadow,COLOR_PAIR(3));
+	wbkgd(menuWin,COLOR_PAIR(2));
+	box(menuWin,0,0);
+
+	wrefresh(shadow);
+	wrefresh(menuWin);
+
+	strcpy(message,"size of the board: ");
+	startx = ((width-2) - strlen(message))/2;
+	mvwprintw(menuWin,starty,startx,message);	
+	mvwprintw(menuWin,starty,startx +1,"%d",size);
+}
+
+
 void destroy_win(WINDOW *local_win)
 {	
 	/* box(local_win, ' ', ' '); : This won't produce the desired
@@ -325,25 +365,22 @@ void destroy_win(WINDOW *local_win)
 	delwin(local_win);
 }
 
-int playAgainstIA(){
+int playAgainstIA(int tam){
 	int flag = 1;
 	char ** board;
 	WINDOW *TTTWin;
 	position playerPos;
 	position enemyPos;
 
-	board = createBoard(BOARDTAM);
-	TTTWin = createTTTWin(BOARDTAM);
+	board = createBoard(tam);
+	TTTWin = createTTTWin(tam);
 	wmove(TTTWin,1,1);
 	wrefresh(TTTWin);
 	int turn = 0;
 
-
-//mientras..... (hay que hacer la funcion de win condition)
-
-	printBoardCurses(TTTWin, board, BOARDTAM);
+	printBoardCurses(TTTWin, board, tam);
 	while(flag){
-		if(checkDraw(board,BOARDTAM)){
+		if(checkDraw(board,tam)){
 			flag =1;
 			return 0;
 			//break;
@@ -351,8 +388,12 @@ int playAgainstIA(){
 
 
 		if(turn ==0){
-			playerPos = selectCell(BOARDTAM,TTTWin);
-			printw("x:%d y:%d",playerPos.x, playerPos.y);
+			//wattron(TTTWin,COLOR_PAIR(5));
+			wattron(TTTWin,COLOR_PAIR(4));
+			do{
+				playerPos = selectCell(tam,TTTWin);
+
+			}while(board[playerPos.y][playerPos.x] != ' ');
 			if(board[playerPos.y][playerPos.x] == ' '){
 				board[playerPos.y][playerPos.x] = PCHAR;
 			}else{
@@ -360,49 +401,42 @@ int playAgainstIA(){
 			}
 			turn =1;
 
-			if(checkWinCond(board,BOARDTAM,PCHAR)){
+			if(checkWinCond(board,tam,PCHAR)){
+				wattron(TTTWin,COLOR_PAIR(1));
+				printBoardCurses(TTTWin, board, tam);
+				wattroff(TTTWin,COLOR_PAIR(1));
+				wrefresh(TTTWin);
 				flag = 0;
 				return 1;
 			}
 		}else{
-			enemyPos = alfabeta2(board,BOARDTAM);
+			wattroff(TTTWin,COLOR_PAIR(4));
+			//wattron(TTTWin,COLOR_PAIR(5));
+			enemyPos = alfabeta2(board,tam);
 			if(board[enemyPos.x][enemyPos.y] == ' '){
 				board[enemyPos.x][enemyPos.y] = ECHAR;
 			}	
 			turn =0;	
 
-			if(checkWinCond(board,BOARDTAM,ECHAR)){
+			if(checkWinCond(board,tam,ECHAR)){
 				flag = 0;
+				wattron(TTTWin,COLOR_PAIR(1));
+				printBoardCurses(TTTWin, board, tam);
+				wattroff(TTTWin,COLOR_PAIR(1));
+				wrefresh(TTTWin);
 				return 2;
 			}
 		}
-
-		printBoardCurses(TTTWin, board, BOARDTAM);
+		
+		printBoardCurses(TTTWin, board, tam);
+		wrefresh(TTTWin);
 		wmove(TTTWin,playerPos.y, playerPos.x);
 		wrefresh(TTTWin);
 	}
 
+	wattroff(TTTWin,COLOR_PAIR(4));
+	wattron(TTTWin,COLOR_PAIR(5));
 	getch();
-
-
-
-	//check win condition
-
-	//turno de la IA
-
-
-
-/*
-	if(turn == 1){
-		playerPos = selectCell();
-		board = playerPos;
-		checkCondition
-		printBoard();
-		turn =0;
-	}else{
-
-	}
-*/
 }
 
 /*
