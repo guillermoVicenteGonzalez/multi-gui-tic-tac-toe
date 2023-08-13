@@ -223,6 +223,8 @@ char ** createBoardCopy(char ** board, int tam){
 
 
 //la x y la y estan cambiadas respecto a lo que serian en un eje de coords cartesianas
+//esta version solo funciona cuando empieza la IA
+//Cuando empieza el jugador, no detecta cuando esta a punto de ganar,
 coords alfabeta(char ** board, int tam){
 	//
 	coords finalCoord; //resultado de la funcion
@@ -314,6 +316,259 @@ coords alfabeta(char ** board, int tam){
 			alfa = beta;
 			finalCoord =currentCoord;
 			//printf("alfa nuevo= %d\n",alfa);
+		}
+
+		/*
+		Ahora: 
+		- liberamos el tablero temporal
+		- Creamos otra copia
+		- Metemos en una lista las casillas vacias de nuevo
+		*/
+
+		freeBoard(tempBoard,BOARDTAM);
+		tempBoard = createBoardCopy(board, tam);
+		freeList(auxLst);
+
+
+	}
+
+	//aqui devolvemos la final coord, que deberia de ser la mejor de las jugadas.
+
+	//printList(lst);
+	//printf("\nla mejor heuristica es: %d\n",alfa);
+	return finalCoord;
+
+}
+
+coords alfabeta2(char **board, int tam){
+		//
+	coords finalCoord; //resultado de la funcion
+	coords currentCoord; //coordenada de la jugada que la maquina esta evaluando hacer
+	coords tempCoord; //coordenada temporal (son jugadas del jugador)
+	coords auxCoord; //variable usada para rellenar la lista.
+	char ** tempBoard;
+	int alfa = -7;
+	int beta = 7;
+	list lst;
+	list auxLst;
+	int h;
+
+	//creamos el tablero auxiliar
+	//y metemos en una lista las casillas vacias
+	lst = createList();
+
+	tempBoard = createBoardCopy(board, tam);
+	for(int i=0; i<tam; i++){
+		for(int j=0;j<tam; j++){
+			if(board[i][j] == ' '){
+				auxCoord.x = i;
+				auxCoord.y = j;
+				pushToList(auxCoord, lst);
+			}
+		}
+	}
+
+
+	/**
+	 * A diferencia de la version 1, primero verificamos que no vaya a ganar el player
+	 * */
+
+
+
+
+	//ahora por cada celda
+	//colocamos una X
+	//rellenamos otra lista con las casillas vacias
+	//para cada casilla ponemos una O
+	//calculamos la heuristica
+	//en la primera iteracion la vamos metiendo en beta
+	while(lst->length > 1){
+		//tomamos el primer elemento de la lista y ponemos una X en esa coordenada
+		currentCoord = getFromList(lst);
+		setCell(tempBoard, currentCoord.x,currentCoord.y,ECHAR);
+
+		//ahora rellenamos una segunda lista con las casillas que quedan vacias (posibles movimientos del rival)
+		auxLst = createList();
+		for(int i=0;i<BOARDTAM;i++){
+			for(int j=0;j<BOARDTAM;j++){
+				if(tempBoard[i][j] == ' '){
+					auxCoord.x = i;
+					auxCoord.y = j;
+					pushToList(auxCoord, auxLst);
+				}
+			}
+		}
+
+		beta = 7;
+		//con la lista llena evaluamos cada uno
+		while(auxLst->length > 1){
+			tempCoord = getFromList(auxLst);
+			setCell(tempBoard,tempCoord.x, tempCoord.y, PCHAR);
+			//printf("se esta evaluando:\nX -> x:%d y:%d\nO -> x:%d y:%d\n",currentCoord.x, currentCoord.y, tempCoord.x, tempCoord.y);
+			//recorrerBoard(tempBoard,3);
+			h = exploreState(tempBoard,3,3,3);
+
+			//si alfa es mejor que un estado de la exploracion, dejo de explorar
+			if(alfa != -7 && h<alfa){
+				//printf("\ndejo de explorar\n");
+				//printf("h=%d; alfa=%d\n",h,alfa);
+				break;
+			}
+
+
+			//si no, comparo y al final de la iteracion me tengo que quedar con el mejor beta.
+			if(h<beta){
+				//printf("h=%d; beta=%d => beta=%d\n",h,beta,h);
+				beta = h;
+			}else if(beta == -7){//si es la primera exploracion
+				beta =h;
+			}
+
+			//!NUEVO. Verifico si gana el jugador
+			//en ese caso le asigno artificialmente una beta muy grande
+			//o: devuelvo
+			if(checkWinCond(tempBoard,BOARDTAM,PCHAR)){
+				beta = -6;
+				//printf("aqui el jugador gana: beta es %d\n",beta);
+			}
+
+			clearCell(tempBoard, tempCoord.x, tempCoord.y);
+			//printf("\n");
+		}
+
+		/*
+		al terminar de explorar todos los estados
+		o salir prematuramente
+		Se compara la beta (mejor jugada del oponente) con alfa (la jugada que mas nos beneficiaba hasta ahora)
+		*/
+		//printf("\n--------------------------------------\ntras esta exploracion, beta = %d\n--------------------------------------\n",beta);
+		if(alfa == -7 || (beta != 7 && beta > alfa)){
+			//printf("alfa previo= %d ",alfa);
+			alfa = beta;
+			finalCoord =currentCoord;
+			//printf("alfa nuevo= %d\n",alfa);
+		}
+
+		/*
+		Ahora: 
+		- liberamos el tablero temporal
+		- Creamos otra copia
+		- Metemos en una lista las casillas vacias de nuevo
+		*/
+
+		freeBoard(tempBoard,BOARDTAM);
+		tempBoard = createBoardCopy(board, tam);
+		freeList(auxLst);
+
+
+	}
+
+	//aqui devolvemos la final coord, que deberia de ser la mejor de las jugadas.
+
+	//printList(lst);
+	//printf("\nla mejor heuristica es: %d\n",alfa);
+	return finalCoord;
+}
+
+coords alfabetaVB(char ** board, int tam){
+	//
+	coords finalCoord; //resultado de la funcion
+	coords currentCoord; //coordenada de la jugada que la maquina esta evaluando hacer
+	coords tempCoord; //coordenada temporal (son jugadas del jugador)
+	coords auxCoord; //variable usada para rellenar la lista.
+	char ** tempBoard;
+	int alfa = -7;
+	int beta = 7;
+	list lst;
+	list auxLst;
+	int h;
+
+	//creamos el tablero auxiliar
+	//y metemos en una lista las casillas vacias
+	lst = createList();
+
+	tempBoard = createBoardCopy(board, tam);
+	for(int i=0; i<tam; i++){
+		for(int j=0;j<tam; j++){
+			if(board[i][j] == ' '){
+				auxCoord.x = i;
+				auxCoord.y = j;
+				pushToList(auxCoord, lst);
+			}
+		}
+	}
+
+
+	//ahora por cada celda
+	//colocamos una X
+	//rellenamos otra lista con las casillas vacias
+	//para cada casilla ponemos una O
+	//calculamos la heuristica
+	//en la primera iteracion la vamos metiendo en beta
+	while(lst->length > 1){
+		//tomamos el primer elemento de la lista y ponemos una X en esa coordenada
+		currentCoord = getFromList(lst);
+		setCell(tempBoard, currentCoord.x,currentCoord.y,ECHAR);
+
+		//ahora rellenamos una segunda lista con las casillas que quedan vacias (posibles movimientos del rival)
+		auxLst = createList();
+		for(int i=0;i<BOARDTAM;i++){
+			for(int j=0;j<BOARDTAM;j++){
+				if(tempBoard[i][j] == ' '){
+					auxCoord.x = i;
+					auxCoord.y = j;
+					pushToList(auxCoord, auxLst);
+				}
+			}
+		}
+
+		beta = 7;
+		//con la lista llena evaluamos cada uno
+		while(auxLst->length > 1){
+			tempCoord = getFromList(auxLst);
+			setCell(tempBoard,tempCoord.x, tempCoord.y, PCHAR);
+			printf("se esta evaluando:\nX -> x:%d y:%d\nO -> x:%d y:%d\n",currentCoord.x, currentCoord.y, tempCoord.x, tempCoord.y);
+			recorrerBoard(tempBoard,3);
+			h = exploreState(tempBoard,3,3,3);
+
+			//si alfa es mejor que un estado de la exploracion, dejo de explorar
+			if(alfa != -7 && h<alfa){
+				//printf("\ndejo de explorar\n");
+				//printf("h=%d; alfa=%d\n",h,alfa);
+				break;
+			}
+
+			//si no, comparo y al final de la iteracion me tengo que quedar con el mejor beta. (el que sea menor)
+			if(h<beta){
+				printf("h=%d; beta=%d => beta=%d\n",h,beta,h);
+				beta = h;
+			}else if(beta == -7){//si es la primera exploracion
+				beta =h;
+			}
+
+			//!NUEVO. Verifico si gana el jugador
+			//en ese caso le asigno artificialmente una beta muy grande
+			//o: devuelvo
+			if(checkWinCond(tempBoard,BOARDTAM,PCHAR)){
+				beta = -6;
+				printf("aqui el jugador gana: beta es %d\n",beta);
+			}
+
+			clearCell(tempBoard, tempCoord.x, tempCoord.y);
+			printf("\n");
+		}
+
+		/*
+		al terminar de explorar todos los estados
+		o salir prematuramente
+		Se compara la beta (mejor jugada del oponente) con alfa (la jugada que mas nos beneficiaba hasta ahora)
+		*/
+		printf("\n--------------------------------------\ntras esta exploracion, beta = %d\n--------------------------------------\n",beta);
+		if(alfa == -7 || (beta != 7 && beta > alfa)){
+			printf("alfa previo= %d ",alfa);
+			alfa = beta;
+			finalCoord =currentCoord;
+			printf("alfa nuevo= %d\n",alfa);
 		}
 
 		/*

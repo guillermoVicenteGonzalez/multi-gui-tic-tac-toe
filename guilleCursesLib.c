@@ -312,6 +312,13 @@ void playAgainstIA(){
 
 	printBoardCurses(TTTWin, board, BOARDTAM);
 	while(flag){
+		if(checkDraw(board,BOARDTAM)){
+			flag =1;
+			printw("Its a draw");
+			break;
+		} 
+
+
 		if(turn ==0){
 			playerPos = selectCell(BOARDTAM,TTTWin);
 			printw("x:%d y:%d",playerPos.x, playerPos.y);
@@ -327,7 +334,7 @@ void playAgainstIA(){
 				printw("Player wins");
 			}
 		}else{
-			enemyPos = alfabeta(board,BOARDTAM);
+			enemyPos = alfabeta2(board,BOARDTAM);
 			if(board[enemyPos.x][enemyPos.y] == ' '){
 				board[enemyPos.x][enemyPos.y] = ECHAR;
 			}	
@@ -342,11 +349,6 @@ void playAgainstIA(){
 		printBoardCurses(TTTWin, board, BOARDTAM);
 		wmove(TTTWin,playerPos.y, playerPos.x);
 		wrefresh(TTTWin);
-		if(checkDraw(board,BOARDTAM)){
-			flag =1;
-			printw("Its a draw");
-		} 
-
 	}
 
 	getch();

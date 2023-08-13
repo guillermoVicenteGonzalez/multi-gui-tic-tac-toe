@@ -44,30 +44,29 @@ int main(int argc, char const *argv[])
 	//getch();
 	endCurses();
 	return 0;
-	
+
+
 
 
 /*
-
 	board = createBoard(3);
-	setCell(board,2,0,'X');
-	setCell(board,1,1,'X');
+	setCell(board,0,0,ECHAR);
+	setCell(board,1,1,PCHAR);
+	setCell(board,0,2,PCHAR);
+
 
 
 	recorrerBoard(board,3);
 
-	printf("%d",checkFullCol(board,BOARDTAM,'X'));
-	printf("%d",checkFullRow(board,BOARDTAM,'X'));
-	printf("%d",checkFullDiag(board,BOARDTAM,'X'));
-	printf("%d",checkFullAntiDiag(board,BOARDTAM,'X'));
-
-	printf("%d",checkWinCond(board,BOARDTAM,'X'));
 
 
 
-	//c = alfabeta(board,3);
-	//printf("[x]:%d    [y]:%d",c.x,c.y);
-	return 0;*/
+	c = alfabetaVB(board,3);
+	printf("[x]:%d    [y]:%d",c.x,c.y);
+*/
+
+
+	return 0;
 	
 	
 }
