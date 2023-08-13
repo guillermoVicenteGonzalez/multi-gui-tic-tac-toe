@@ -222,7 +222,7 @@ int menu(){
     wattron(menuWin,A_BLINK);
 	strcpy(message,"Player against IA");
 	auxX = ((width-2) - strlen(message))/2;
-	auxY = 3;
+	auxY = 2;
 	mvwprintw(menuWin, auxY, auxX,message);
 	wattroff(menuWin,A_STANDOUT);
 	wattroff(menuWin,A_BLINK);
@@ -230,12 +230,17 @@ int menu(){
 
 	strcpy(message,"Player against Player");
 	auxX = ((width-2) - strlen(message))/2;
-	auxY = 5;
+	auxY = 4;
+	mvwprintw(menuWin, auxY, auxX,message);
+
+	strcpy(message,"change board size");
+	auxX = ((width-2) - strlen(message))/2;
+	auxY = 6;
 	mvwprintw(menuWin, auxY, auxX,message);
 
 	strcpy(message,"Exit");
 	auxX = ((width-2) - strlen(message))/2;
-	auxY = 7;
+	auxY = 8;
 	mvwprintw(menuWin, auxY, auxX,message);
 
 	wmove(menuWin,auxY,auxX);
@@ -251,7 +256,7 @@ int menu(){
 				break;
 
 			case KEY_DOWN:
-				if(selection < 2)
+				if(selection < 3)
 					selection++;
 				break;
 		}
@@ -261,55 +266,95 @@ int menu(){
 			    wattron(menuWin,A_BLINK);
 				strcpy(message,"Player against IA");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 3;
+				auxY = 2;
 				mvwprintw(menuWin, auxY, auxX,message);
 				wattroff(menuWin,A_STANDOUT);
 				wattroff(menuWin,A_BLINK);
 
 				strcpy(message,"Player against Player");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 5;
+				auxY = 4;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"change board size");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 6;
 				mvwprintw(menuWin, auxY, auxX,message);
 
 				strcpy(message,"Exit");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 7;
+				auxY = 8;
 				mvwprintw(menuWin, auxY, auxX,message);
 		}else if(selection == 1){
 				strcpy(message,"Player against IA");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 3;
+				auxY = 2;
 				mvwprintw(menuWin, auxY, auxX,message);
 
 				wattron(menuWin,A_STANDOUT);
 			    wattron(menuWin,A_BLINK);
 				strcpy(message,"Player against Player");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 5;
+				auxY = 4;
+				mvwprintw(menuWin, auxY, auxX,message);
+				wattroff(menuWin,A_STANDOUT);
+				wattroff(menuWin,A_BLINK);
+
+				strcpy(message,"change board size");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 6;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"Exit");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 8;
+				mvwprintw(menuWin, auxY, auxX,message);
+		}else if(selection == 2){
+				strcpy(message,"Player against IA");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 2;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"Player against Player");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 4;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				wattron(menuWin,A_STANDOUT);
+			    wattron(menuWin,A_BLINK);
+				strcpy(message,"change board size");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 6;
 				mvwprintw(menuWin, auxY, auxX,message);
 				wattroff(menuWin,A_STANDOUT);
 				wattroff(menuWin,A_BLINK);
 
 				strcpy(message,"Exit");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 7;
+				auxY = 8;
 				mvwprintw(menuWin, auxY, auxX,message);
-		}else if(selection == 2){
+
+		}else if(selection == 3){
 				strcpy(message,"Player against IA");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 3;
+				auxY = 2;
 				mvwprintw(menuWin, auxY, auxX,message);
 
 				strcpy(message,"Player against Player");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 5;
+				auxY = 4;
+				mvwprintw(menuWin, auxY, auxX,message);
+
+				strcpy(message,"change board size");
+				auxX = ((width-2) - strlen(message))/2;
+				auxY = 6;
 				mvwprintw(menuWin, auxY, auxX,message);
 
 				wattron(menuWin,A_STANDOUT);
 			    wattron(menuWin,A_BLINK);
 				strcpy(message,"Exit");
 				auxX = ((width-2) - strlen(message))/2;
-				auxY = 7;
+				auxY = 8;
 				mvwprintw(menuWin, auxY, auxX,message);
 				wattroff(menuWin,A_STANDOUT);
 				wattroff(menuWin,A_BLINK);
@@ -329,14 +374,13 @@ int menu(){
 	return selection;
 }
 
-int sizeMenu(){
+int sizeMenu(int size){
 	WINDOW * menuWin;
 	WINDOW * shadow;
 	int width, height, startx, starty, auxX, auxY;
 	char message[30];
 	int selection = 0;
 	int ch;
-	int size = 3;
 
 	width = COLS/2;
 	height = LINES/2;
@@ -350,14 +394,33 @@ int sizeMenu(){
 	wbkgd(menuWin,COLOR_PAIR(2));
 	box(menuWin,0,0);
 
+
+	strcpy(message,"Size of the board: ");
+	startx = ((width-2) - strlen(message))/2;
+	mvwprintw(menuWin,starty,startx,message);	
+	startx = startx + strlen(message);
+	mvwprintw(menuWin,starty,startx +1,"%d",size);
 	wrefresh(shadow);
 	wrefresh(menuWin);
 
-	strcpy(message,"size of the board: ");
-	startx = ((width-2) - strlen(message))/2;
-	mvwprintw(menuWin,starty,startx,message);	
-	mvwprintw(menuWin,starty,startx +1,"%d",size);
+	do{
+		ch = getch();
+		if(ch == KEY_UP && size < 10){
+			size++;
+			mvwprintw(menuWin,starty,startx +1,"%d",size);
+		}else if(ch == KEY_DOWN && size > 3){
+			size--;
+			mvwprintw(menuWin,starty,startx +1,"%d",size);
+		}
+			wrefresh(menuWin);
+	}while(ch != 10);
+
+	wrefresh(shadow);
+
+	return size;
 }
+
+
 
 
 void destroy_win(WINDOW *local_win)
@@ -380,6 +443,82 @@ void destroy_win(WINDOW *local_win)
 	 */
 	wrefresh(local_win);
 	delwin(local_win);
+}
+
+int playAgainstPlayer(int tam){
+	int flag = 1;
+	char ** board;
+	WINDOW *TTTWin;
+	position playerPos;
+	position enemyPos;
+
+	board = createBoard(tam);
+	TTTWin = createTTTWin(tam);
+	wmove(TTTWin,1,1);
+	wrefresh(TTTWin);
+	int turn = 0;
+
+	printBoardCurses(TTTWin, board, tam);
+	while(flag){
+		if(checkDraw(board,tam)){
+			flag =1;
+			return 0;
+			//break;
+		} 
+
+
+		if(turn ==0){
+			wrefresh(TTTWin);
+			refresh();
+			do{
+				playerPos = selectCell(tam,TTTWin);
+
+			}while(board[playerPos.y][playerPos.x] != ' ');
+			if(board[playerPos.y][playerPos.x] == ' '){
+				board[playerPos.y][playerPos.x] = PCHAR;
+			}else{
+				return -1;
+			}
+
+			if(checkWinCond(board,tam,PCHAR)){
+				printBoardCurses(TTTWin, board, tam);
+				wrefresh(TTTWin);
+				flag = 0;
+				return 1;
+			}
+
+			turn =1;
+
+		}else{
+			wrefresh(TTTWin);
+			refresh();
+			do{
+				playerPos = selectCell(tam,TTTWin);
+
+			}while(board[playerPos.y][playerPos.x] != ' ');
+			if(board[playerPos.y][playerPos.x] == ' '){
+				board[playerPos.y][playerPos.x] = ECHAR;
+			}else{
+				return -1;
+			}
+
+			if(checkWinCond(board,tam,ECHAR)){
+				printBoardCurses(TTTWin, board, tam);
+				wrefresh(TTTWin);
+				flag = 0;
+				return 1;
+			}
+
+			turn = 0;			
+		}
+		
+		printBoardCurses(TTTWin, board, tam);
+		wrefresh(TTTWin);
+		wmove(TTTWin,playerPos.y, playerPos.x);
+		wrefresh(TTTWin);
+	}
+
+	getch();
 }
 
 int playAgainstIA(int tam){

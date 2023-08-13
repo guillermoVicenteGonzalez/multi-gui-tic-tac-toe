@@ -16,3 +16,5 @@ position selectCell(int tam, WINDOW * win);
 int menu();
 void destroy_win(WINDOW *local_win);
 int playAgainstIA(int tam);
+int sizeMenu();
+int playAgainstPlayer(int tam);
