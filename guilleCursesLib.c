@@ -16,14 +16,23 @@ void initCurses(){
 		init_color(COLOR_GREEN, 0, 1000, 0);
 		init_color(COLOR_BLUE, 0, 0, 1000);
 		init_color(COLOR_WHITE, 1000, 1000, 1000);
-		//init_color(COLOR_BLACK, 0, 0, 0);
+		init_color(COLOR_BLACK, 0, 0, 0);
 
+		/*
 		init_pair(1, COLOR_GREEN, COLOR_WHITE); //fondo
 		init_pair(2,COLOR_WHITE,COLOR_BLUE); //menues
 		init_pair(3,COLOR_GREEN,COLOR_BLACK); //negro para sombras
 
-		init_pair(4, COLOR_GREEN, COLOR_BLUE); //jugadas de player1
+		init_pair(4, COLOR_RED, COLOR_BLUE); //jugadas de player1
 		init_pair(5, COLOR_RED, COLOR_BLUE); //jugadas de player2/IA
+		*/
+		init_pair(1, COLOR_RED,COLOR_WHITE);
+		init_pair(2,COLOR_WHITE,COLOR_BLUE);
+		init_pair(3,COLOR_RED,COLOR_BLACK);
+
+		init_pair(4,COLOR_RED,COLOR_WHITE);
+		init_pair(6,COLOR_GREEN,COLOR_BLUE);
+		init_pair(5,COLOR_RED,COLOR_BLUE);
 	}
 }
 
@@ -97,7 +106,15 @@ void printBoardCurses(WINDOW * win, char ** board, int tam){
 			if(board[i][j] == ' '){
 				mvwaddch(win,i+1,j+1,'_');
 			}else{
-				mvwaddch(win,i+1,j+1,board[i][j]);
+				if(board[i][j] == PCHAR){
+					wattron(win,COLOR_PAIR(6));
+					mvwaddch(win,i+1,j+1,board[i][j]);
+					wattroff(win,COLOR_PAIR(6));
+				}else{
+					wattron(win,COLOR_PAIR(5));
+					mvwaddch(win,i+1,j+1,board[i][j]);
+					wattroff(win,COLOR_PAIR(5));					
+				}
 			}
 		}
 	}
@@ -388,8 +405,8 @@ int playAgainstIA(int tam){
 
 
 		if(turn ==0){
-			//wattron(TTTWin,COLOR_PAIR(5));
-			wattron(TTTWin,COLOR_PAIR(4));
+			wrefresh(TTTWin);
+			refresh();
 			do{
 				playerPos = selectCell(tam,TTTWin);
 
@@ -399,19 +416,17 @@ int playAgainstIA(int tam){
 			}else{
 				return -1;
 			}
-			turn =1;
 
 			if(checkWinCond(board,tam,PCHAR)){
-				wattron(TTTWin,COLOR_PAIR(1));
 				printBoardCurses(TTTWin, board, tam);
-				wattroff(TTTWin,COLOR_PAIR(1));
 				wrefresh(TTTWin);
 				flag = 0;
 				return 1;
 			}
+
+			turn =1;
+
 		}else{
-			wattroff(TTTWin,COLOR_PAIR(4));
-			//wattron(TTTWin,COLOR_PAIR(5));
 			enemyPos = alfabeta2(board,tam);
 			if(board[enemyPos.x][enemyPos.y] == ' '){
 				board[enemyPos.x][enemyPos.y] = ECHAR;
@@ -420,9 +435,7 @@ int playAgainstIA(int tam){
 
 			if(checkWinCond(board,tam,ECHAR)){
 				flag = 0;
-				wattron(TTTWin,COLOR_PAIR(1));
 				printBoardCurses(TTTWin, board, tam);
-				wattroff(TTTWin,COLOR_PAIR(1));
 				wrefresh(TTTWin);
 				return 2;
 			}
@@ -434,8 +447,6 @@ int playAgainstIA(int tam){
 		wrefresh(TTTWin);
 	}
 
-	wattroff(TTTWin,COLOR_PAIR(4));
-	wattron(TTTWin,COLOR_PAIR(5));
 	getch();
 }
 

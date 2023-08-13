@@ -22,17 +22,17 @@ int main(int argc, char const *argv[])
 
 	refresh();
 	mainWin = createRWin();
-	wbkgd(mainWin,COLOR_PAIR(3));
+	wbkgd(mainWin,COLOR_PAIR(1));
 	wrefresh(mainWin);
 
 	do{
 		destroy_win(mainWin);
 		mainWin = createRWin();
-		wbkgd(mainWin,COLOR_PAIR(3));
+		wbkgd(mainWin,COLOR_PAIR(1));
 		selection = menu();
 		destroy_win(mainWin);
 		mainWin = createRWin();
-		wbkgd(mainWin,COLOR_PAIR(3));
+		wbkgd(mainWin,COLOR_PAIR(1));
 		wrefresh(mainWin);
 
 		if(0 == selection){
@@ -47,11 +47,11 @@ int main(int argc, char const *argv[])
 				mvwprintw(mainWin,3,((COLS - strlen(message))/2),message);
 			}else if(winner == 2){
 				//enemy
-				attron(COLOR_PAIR(4));
+				//wattron(mainWin,COLOR_PAIR(4));
 				refresh();
 				strcpy(message,"Enemy wins");
 				mvwprintw(mainWin,3,((COLS - strlen(message))/2),message);
-				attroff(COLOR_PAIR(4));
+				//wattroff(mainWin,COLOR_PAIR(4));
 			}
 
 			wrefresh(mainWin);
